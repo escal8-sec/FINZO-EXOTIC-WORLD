@@ -1,0 +1,8 @@
+{
+  "name": "FINZO EXOTIC WORLD",
+  "description": "Dive Into Your Next Obsession. Exotic ornamental fish, bespoke rimless aquariums, and luxury aquatic care by FINZO EXOTIC WORLD.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

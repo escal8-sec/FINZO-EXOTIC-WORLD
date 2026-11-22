@@ -1,0 +1,348 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Exotic ornamental fish or architectural aquarium product in the FINZO EXOTIC WORLD catalog.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "slug": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "scientificName": { "type": "string", "maxLength": 120 },
+        "kind": { "type": "string", "enum": ["fish", "aquarium"] },
+        "category": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "originOrMaterial": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "highlightSpec": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "price": { "type": "number" },
+        "discountedPrice": { "type": "number" },
+        "image": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "secondaryImages": { "type": "array" },
+        "badge": { "type": "string", "maxLength": 40 },
+        "availability": { "type": "string", "enum": ["In Stock", "Quarantine Ready", "Made to Order", "Out of Stock"] },
+        "isAvailable": { "type": "boolean" },
+        "deliveryAvailable": { "type": "boolean" },
+        "customAquariumCompatible": { "type": "boolean" },
+        "customAddonRole": { "type": "string", "maxLength": 40 },
+        "shortDescription": { "type": "string", "minLength": 1, "maxLength": 320 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 2500 },
+        "variants": { "type": "array" },
+        "specs": { "type": "array" },
+        "careNotes": { "type": "array" },
+        "isDemo": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "slug",
+        "name",
+        "kind",
+        "category",
+        "originOrMaterial",
+        "highlightSpec",
+        "price",
+        "image",
+        "availability",
+        "shortDescription",
+        "description",
+        "variants",
+        "specs",
+        "isDemo",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Unlimited storefront category taxonomy managed by admin.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 60 },
+        "kind": { "type": "string", "enum": ["fish", "aquarium"] },
+        "description": { "type": "string", "maxLength": 240 },
+        "image": { "type": "string", "maxLength": 2048 },
+        "displayOrder": { "type": "number" },
+        "isActive": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "kind", "description", "displayOrder", "isActive", "updatedAt"]
+    },
+    "Inventory": {
+      "title": "Inventory",
+      "description": "Real-time stock and quarantine tracking linked to a product ID.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "stockCount": { "type": "number" },
+        "quarantineStatus": { "type": "string", "enum": ["Cleared", "In Quarantine", "Made to Order"] },
+        "lowStockThreshold": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "productName", "stockCount", "quarantineStatus", "lowStockThreshold", "updatedAt"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Private customer profile containing PII protected by owner/admin isolation.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "email": { "type": "string", "format": "email", "maxLength": 160 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "aquariumFocus": { "type": "string", "maxLength": 120 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "email", "phone", "aquariumFocus", "createdAt", "updatedAt"]
+    },
+    "Address": {
+      "title": "Address",
+      "description": "Customer delivery address record with PIN code and optional Google Maps coordinates.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "recipientName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "fullName": { "type": "string", "maxLength": 100 },
+        "mobile": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 160 },
+        "buildingName": { "type": "string", "maxLength": 160 },
+        "street": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "area": { "type": "string", "maxLength": 120 },
+        "district": { "type": "string", "maxLength": 80 },
+        "city": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "state": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "postalCode": { "type": "string", "minLength": 1, "maxLength": 24 },
+        "pinCode": { "type": "string", "maxLength": 24 },
+        "country": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "phone": { "type": "string", "minLength": 1, "maxLength": 30 },
+        "deliveryInstructions": { "type": "string", "maxLength": 300 },
+        "lat": { "type": "number" },
+        "lng": { "type": "number" },
+        "placeId": { "type": "string", "maxLength": 200 },
+        "formattedAddress": { "type": "string", "maxLength": 300 },
+        "isDefault": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "customerId",
+        "label",
+        "recipientName",
+        "street",
+        "city",
+        "state",
+        "postalCode",
+        "country",
+        "phone",
+        "isDefault",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Cart": {
+      "title": "Cart",
+      "description": "Persistent shopping cart tied to a customer UID.",
+      "type": "object",
+      "properties": {
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "items": { "type": "array" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerId", "items", "updatedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order record supporting standard products, custom aquariums, delivery calculations, and order lifecycle.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderNumber": { "type": "string", "maxLength": 40 },
+        "orderType": { "type": "string", "enum": ["standard", "custom_aquarium", "mixed"] },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "customerEmail": { "type": "string", "maxLength": 160 },
+        "customerPhone": { "type": "string", "maxLength": 30 },
+        "items": { "type": "array" },
+        "customAquarium": { "type": "object" },
+        "shippingAddress": { "type": "object" },
+        "promoCode": { "type": "string", "maxLength": 40 },
+        "subtotal": { "type": "number" },
+        "deliveryCharge": { "type": "number" },
+        "deliveryMode": { "type": "string", "enum": ["standard", "local", "pickup"] },
+        "discountAmount": { "type": "number" },
+        "totalAmount": { "type": "number" },
+        "paymentMethod": { "type": "string", "maxLength": 60 },
+        "paymentStatus": { "type": "string", "enum": ["pending_confirmation", "cod_scheduled", "paid", "refunded"] },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "confirmed", "packed", "acclimating", "shipped", "delivered", "cancelled"]
+        },
+        "fulfillmentNote": { "type": "string", "maxLength": 500 },
+        "whatsappStatus": { "type": "string", "maxLength": 120 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "customerId",
+        "customerName",
+        "customerEmail",
+        "items",
+        "shippingAddress",
+        "discountAmount",
+        "totalAmount",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "WishlistItem": {
+      "title": "WishlistItem",
+      "description": "Customer saved wishlist item referencing a valid product.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "productSlug": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "productImage": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "price": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "customerId", "productId", "productName", "productSlug", "productImage", "price", "createdAt"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Verified customer review for a storefront product.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "authorName": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "minLength": 3, "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "productId", "customerId", "authorName", "rating", "comment", "createdAt", "updatedAt"]
+    },
+    "Promotion": {
+      "title": "Promotion",
+      "description": "Promotional code or seasonal aquatic offer managed by admins.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "code": { "type": "string", "minLength": 2, "maxLength": 40, "pattern": "^[A-Z0-9_\\-]+$" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 240 },
+        "discountPercent": { "type": "number" },
+        "minOrderAmount": { "type": "number" },
+        "isActive": { "type": "boolean" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "code", "title", "description", "discountPercent", "minOrderAmount", "isActive", "updatedAt"]
+    },
+    "StoreSetting": {
+      "title": "StoreSetting",
+      "description": "Admin-configurable store branding, WhatsApp number, delivery rules, custom aquarium pricing, and homepage banners.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "tagline": { "type": "string", "maxLength": 160 },
+        "logoUrl": { "type": "string", "maxLength": 2048 },
+        "contactEmail": { "type": "string", "maxLength": 160 },
+        "whatsappNumber": { "type": "string", "maxLength": 30 },
+        "instagramHandle": { "type": "string", "maxLength": 80 },
+        "businessAddress": { "type": "string", "maxLength": 300 },
+        "shippingAvailable": { "type": "boolean" },
+        "heroHeadline": { "type": "string", "maxLength": 160 },
+        "heroSubtitle": { "type": "string", "maxLength": 320 },
+        "banners": { "type": "array" },
+        "paymentMethods": { "type": "array" },
+        "deliveryConfig": { "type": "object" },
+        "customAquariumConfig": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "storeName",
+        "tagline",
+        "contactEmail",
+        "whatsappNumber",
+        "businessAddress",
+        "shippingAvailable",
+        "updatedAt"
+      ]
+    },
+    "AdminRole": {
+      "title": "AdminRole",
+      "description": "Trusted administrator grant document.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "format": "email", "maxLength": 160 },
+        "grantedBy": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "grantedBy", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Public storefront catalog of exotic fish and aquarium hardware."
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Storefront category definitions."
+    },
+    "/inventory/{productId}": {
+      "schema": { "$ref": "#/entities/Inventory" },
+      "description": "Stock quantities and quarantine status per product."
+    },
+    "/customers/{customerId}": {
+      "schema": { "$ref": "#/entities/Customer" },
+      "description": "Private customer profile records isolated by UID."
+    },
+    "/addresses/{addressId}": {
+      "schema": { "$ref": "#/entities/Address" },
+      "description": "Customer shipping addresses restricted to owner and admins."
+    },
+    "/carts/{customerId}": {
+      "schema": { "$ref": "#/entities/Cart" },
+      "description": "Persistent shopping cart synchronized by customer UID."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer orders, custom aquarium builds, and concierge fulfillment."
+    },
+    "/wishlists/{wishlistId}": {
+      "schema": { "$ref": "#/entities/WishlistItem" },
+      "description": "Customer saved wishlist items."
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Product reviews authored by verified customers."
+    },
+    "/promotions/{promoId}": {
+      "schema": { "$ref": "#/entities/Promotion" },
+      "description": "Active promotional offers and discount codes."
+    },
+    "/storeSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/StoreSetting" },
+      "description": "Public store settings, delivery pricing rules, and custom aquarium pricing configuration."
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminRole" },
+      "description": "Trusted administrator UIDs managed by the bootstrapped owner."
+    }
+  }
+}

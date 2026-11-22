@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #040b16;
+    color: #f1f5f9;
+    font-family: var(--font-sans);
+  }
+
+  body {
+    overflow-x: hidden;
+    background: radial-gradient(circle at 50% 0%, #091d3a 0%, #040b16 62%, #02060d 100%);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: var(--font-serif);
+    text-wrap: balance;
+  }
+}
+
+/* Custom subtle glassmorphism and underwater atmospheric utilities */
+.glass-panel {
+  background: linear-gradient(158deg, rgba(13, 33, 62, 0.72) 0%, rgba(5, 15, 31, 0.86) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.glass-panel-hover {
+  transition:
+    transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 260ms ease,
+    box-shadow 260ms ease;
+  will-change: transform;
+}
+
+.glass-panel-hover:hover {
+  transform: translate3d(0, -4px, 0);
+  border-color: rgba(34, 211, 238, 0.38);
+  box-shadow:
+    0 24px 48px -18px rgba(2, 12, 27, 0.92),
+    0 0 32px -12px rgba(34, 211, 238, 0.24);
+}
+
+.gold-hairline {
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.6) 50%, transparent 100%);
+}
+
+/* Tactile micro-interaction helper for luxury buttons */
+.btn-tactile {
+  transition:
+    transform 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 200ms ease;
+}
+
+.btn-tactile:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* GPU-composited skeleton shimmer */
+@keyframes aquaticShimmer {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: rgba(11, 30, 59, 0.65);
+}
+
+.skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translate3d(-100%, 0, 0);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(34, 211, 238, 0.09) 45%,
+    rgba(212, 175, 55, 0.06) 55%,
+    transparent 100%
+  );
+  animation: aquaticShimmer 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+/* GPU-composited underwater keyframes */
+@keyframes lightRaySway {
+  0%, 100% {
+    transform: translate3d(-12px, 0, 0) skewX(-9deg) scaleY(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate3d(26px, 0, 0) skewX(-4deg) scaleY(1.05);
+    opacity: 0.38;
+  }
+}
+
+@keyframes plantSway {
+  0%, 100% {
+    transform: rotate(-2.8deg) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: rotate(3.4deg) translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes causticShimmer {
+  0%, 100% {
+    transform: translate3d(-2.5%, 0, 0) scale(1);
+    opacity: 0.32;
+  }
+  50% {
+    transform: translate3d(2.5%, -1%, 0) scale(1.06);
+    opacity: 0.5;
+  }
+}
+
+@keyframes tailFlutter {
+  0%, 100% {
+    transform: scaleX(1) skewY(0deg);
+  }
+  50% {
+    transform: scaleX(0.84) skewY(3deg);
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+.animate-ray-slow {
+  animation: lightRaySway 11s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-ray-slower {
+  animation: lightRaySway 15s ease-in-out infinite reverse;
+  will-change: transform, opacity;
+}
+
+.animate-plant-sway {
+  transform-origin: bottom center;
+  animation: plantSway 7.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-caustic {
+  animation: causticShimmer 8.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.animate-tail {
+  transform-box: fill-box;
+  transform-origin: right center;
+  animation: tailFlutter 0.9s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: floatGentle 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-ray-slow,
+  .animate-ray-slower,
+  .animate-plant-sway,
+  .animate-caustic,
+  .animate-tail,
+  .animate-float-gentle,
+  .skeleton-shimmer::after {
+    animation: none !important;
+  }
+  .glass-panel-hover:hover {
+    transform: none;
+  }
+}

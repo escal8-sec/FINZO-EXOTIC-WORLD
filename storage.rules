@@ -1,0 +1,48 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    function isSafeAssetName(fileName) {
+      return fileName.matches('^[a-zA-Z0-9_\\-\\.]{1,140}$');
+    }
+
+    function isAdminStorageUser() {
+      return request.auth != null &&
+        request.auth.token.email_verified == true &&
+        (
+          request.auth.token.email == 'luttappiluttu786@gmail.com' ||
+          firestore.exists(/databases/ai-studio-finzoexoticworld-3841ffcb-f6c9-4b98-a346-db12af01dfe7/documents/admins/$(request.auth.uid))
+        );
+    }
+
+    match /products/{fileName} {
+      allow read: if true;
+      allow write: if isAdminStorageUser() &&
+        isSafeAssetName(fileName) &&
+        request.resource != null &&
+        request.resource.size < 5 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/(jpeg|png|webp|avif)');
+    }
+
+    match /categories/{fileName} {
+      allow read: if true;
+      allow write: if isAdminStorageUser() &&
+        isSafeAssetName(fileName) &&
+        request.resource != null &&
+        request.resource.size < 5 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/(jpeg|png|webp|avif)');
+    }
+
+    match /branding/{fileName} {
+      allow read: if true;
+      allow write: if isAdminStorageUser() &&
+        isSafeAssetName(fileName) &&
+        request.resource != null &&
+        request.resource.size < 5 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/(jpeg|png|webp|avif)');
+    }
+  }
+}
